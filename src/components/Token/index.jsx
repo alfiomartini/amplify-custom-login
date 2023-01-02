@@ -1,44 +1,47 @@
 import React from "react";
 import { Button } from "../Button";
 import { useState } from "react";
+import { Auth } from "aws-amplify";
+import { useHistory } from "react-router-dom";
 
-export const Token = () => {
-  const [username, setUsername] = useState("");
+async function confirmSignUp(email, token) {
+  let confirm = false;
+  try {
+    await Auth.confirmSignUp(email, token);
+    confirm = true;
+  } catch (error) {
+    console.log("error confirming sign up", error);
+  }
+  return confirm;
+}
+
+export const Token = ({ email }) => {
   const [token, setToken] = useState("");
 
-  const clear = () => {
-    setUsername("");
-    setToken("");
-  };
+  const history = useHistory();
 
-  const handleUsername = (e) => {
-    setUsername(e.target.value);
+  const clear = () => {
+    setToken("");
   };
 
   const handleToken = (e) => {
     setToken(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    alert("Sign up successful");
+    const confirmPwd = await confirmSignUp(email, token);
+    if (confirmPwd) {
+      alert("Sign up successful");
+      history.push("/signIn");
+    } else {
+      alert("Confirmation unsuccessful. Type code again.");
+    }
     clear();
   };
 
   return (
     <form className="form-group" onSubmit={handleSubmit}>
-      <div className="form-control">
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          placeholder="username"
-          name="username"
-          id="username"
-          value={username}
-          onChange={handleUsername}
-        />
-      </div>
       <div className="form-control">
         <label htmlFor="token">Confirmation Token</label>
         <input

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../Button";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import passwordValidator from "password-validator";
 
@@ -23,6 +24,7 @@ export const SignIn = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const history = useHistory();
   const clear = () => {
     setEmail("");
     setPassword("");
@@ -42,11 +44,16 @@ export const SignIn = ({ setUser }) => {
     const validate = schema.validate(password);
     if (!validate) {
       alert("Password must contain letter and digits. Minimum length: 8");
-    } else {
-      const user = await signIn(email, password);
-      console.log("user", user);
-      setUser(user);
+      return;
     }
+    const user = await signIn(email, password);
+    if (!user) {
+      alert("Error with signIn");
+      return;
+    }
+    console.log("user", user);
+    setUser(user);
+    history.push("/");
     clear();
   };
 
@@ -79,7 +86,7 @@ export const SignIn = ({ setUser }) => {
       <Button width="90%" type={"submit"}>
         Sign In
       </Button>
-      <div className="toSignUp" onClick={() => {}}>
+      <div className="toSignUp" onClick={() => history.push("/signUp")}>
         Don't you have an account?
       </div>
     </form>

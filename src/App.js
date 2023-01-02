@@ -5,6 +5,7 @@ import { SignIn } from "./components/SignIn";
 import { SignUp } from "./components/SignUp";
 import { Navbar } from "./components/Navbar";
 import { Route, Switch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./App.css";
 
 Amplify.configure(awsConfig);
@@ -20,9 +21,12 @@ async function signOut() {
 function App() {
   const [user, setUser] = useState(null);
 
+  const history = useHistory();
+
   const doSignOut = async () => {
     await signOut();
     setUser(null);
+    history.pushState("/");
   };
 
   return (
@@ -31,7 +35,7 @@ function App() {
       <div className="container">
         <Switch>
           <Route exact path="/">
-            <SignIn setUser={setUser} />
+            <h2>Testing Amplify API</h2>
           </Route>
           <Route path="/signIn">
             <SignIn setUser={setUser} />

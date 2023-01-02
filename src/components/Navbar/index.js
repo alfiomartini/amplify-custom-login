@@ -22,9 +22,7 @@ export const Navbar = ({ user, doSignOut }) => {
           Sign Out
         </Link>
       )}
-      {/* {isAuthenticated && user && (
-        <div className="auth-user"> {user.getUsername()}</div>
-      )} */}
+      {user && <div className="auth-user"> {user.attributes.email}</div>}
     </div>
   );
 };

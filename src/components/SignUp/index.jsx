@@ -2,7 +2,29 @@ import React from "react";
 import { Button } from "../Button";
 import { useState } from "react";
 import passwordValidator from "password-validator";
+import { Auth } from "aws-amplify";
 import { Token } from "../Token";
+
+async function signUp(email, password) {
+  let signedUp = false;
+  try {
+    const { user } = await Auth.signUp({
+      username: email,
+      password: password,
+      attributes: {
+        email: email,
+      },
+      // autoSignIn: { // optional - enables auto sign in after user is confirmed
+      //     enabled: true,
+      // }
+    });
+    console.log(user);
+    signedUp = true;
+  } catch (error) {
+    console.log("error signing up:", error);
+  }
+  return signedUp;
+}
 
 const schema = new passwordValidator();
 
@@ -12,6 +34,7 @@ export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
+  const [askToken, setAskToken] = useState(false);
   const [showToken, setShowToken] = useState(false);
 
   const clear = () => {
@@ -31,7 +54,7 @@ export const SignUp = () => {
     setConfirmPwd(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPwd) {
       alert("Password confirmation failed");
@@ -42,6 +65,13 @@ export const SignUp = () => {
     const validate = schema.validate(password);
     if (!validate) {
       alert("Password must contain letter and digits. Minimum length: 8");
+      return;
+    }
+    const signedUp = await signUp(email, password);
+    if (!signedUp) {
+      alert("Problem with signUp.");
+    } else {
+      setAskToken(true);
     }
   };
 
@@ -87,15 +117,12 @@ export const SignUp = () => {
           Sign Up
         </Button>
       </form>
-      <Button
-        width="140px"
-        handleClick={() => {
-          setShowToken(!showToken);
-        }}
-      >
-        Confirm Token
-      </Button>
-      {showToken && <Token />}
+      {askToken && (
+        <Button width="140px" handleClick={() => setShowToken(!showToken)}>
+          Confirm Token
+        </Button>
+      )}
+      {showToken && <Token email={email} />}
     </>
   );
 };
