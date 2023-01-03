@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/amplify-custom-login/static/css/main.22b13ae7.css",
+    "main.js": "/amplify-custom-login/static/js/main.80db461d.js",
+    "index.html": "/amplify-custom-login/index.html",
+    "main.22b13ae7.css.map": "/amplify-custom-login/static/css/main.22b13ae7.css.map",
+    "main.80db461d.js.map": "/amplify-custom-login/static/js/main.80db461d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.22b13ae7.css",
+    "static/js/main.80db461d.js"
+  ]
+}
