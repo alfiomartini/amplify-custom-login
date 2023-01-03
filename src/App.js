@@ -26,7 +26,7 @@ function App() {
   const doSignOut = async () => {
     await signOut();
     setUser(null);
-    history.pushState("/");
+    history.push("/");
   };
 
   return (
