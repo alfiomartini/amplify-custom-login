@@ -8,7 +8,7 @@ import { Token } from "../Token";
 async function signUp(email, password) {
   let signedUp = false;
   try {
-    const { user } = await Auth.signUp({
+    await Auth.signUp({
       username: email,
       password: password,
       attributes: {
@@ -18,7 +18,6 @@ async function signUp(email, password) {
       //     enabled: true,
       // }
     });
-    console.log(user);
     signedUp = true;
   } catch (error) {
     console.log("error signing up:", error);

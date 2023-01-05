@@ -13,11 +13,7 @@ async function signIn(email, password) {
   let user = null;
   try {
     user = await Auth.signIn(email, password);
-    console.log("user signed in", user);
-    console.log("access token", user.signInUserSession.accessToken.jwtToken);
-    console.log("id token", user.signInUserSession.idToken.jwtToken);
   } catch (error) {
-    console.log("error signing in", error);
     user = null;
   }
   return user;
