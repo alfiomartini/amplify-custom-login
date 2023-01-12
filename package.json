@@ -1,6 +1,5 @@
 {
   "name": "amplify-custom-login",
-  "homepage": "https://alfiomartini.github.io/amplify-custom-login",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
